@@ -1,48 +1,192 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/layout :: head('Shop')}"></head>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+
 <body>
+
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/layout :: alerts}"></div>
-<main class="container py-5">
-    <div class="row g-4">
-        <div class="col-lg-3">
-            <div class="section-card p-4 sticky-sidebar">
-                <h4>Filter Products</h4>
-                <form method="get" th:action="@{/shop}" class="mt-3">
-                    <input class="form-control mb-3" type="text" name="search" placeholder="Search products" th:value="${search}">
-                    <select class="form-select mb-3" name="category">
-                        <option value="">All categories</option>
-                        <option th:each="categoryItem : ${categories}" th:value="${categoryItem.slug}" th:text="${categoryItem.name}" th:selected="${selectedCategory == categoryItem.slug}"></option>
-                    </select>
-                    <input class="form-control mb-3" type="number" step="0.01" name="minPrice" placeholder="Minimum price" th:value="${minPrice}">
-                    <input class="form-control mb-3" type="number" step="0.01" name="maxPrice" placeholder="Maximum price" th:value="${maxPrice}">
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" name="available" value="true" th:checked="${available}">
-                        <label class="form-check-label">In stock only</label>
+
+<main>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-6">
+                        <span class="hero-badge">Premium Pet Care</span>
+                        <h1 class="hero-title mt-3">
+                            Everything Your Pet Needs For A Happier & Healthier Life
+                        </h1>
+                        <p class="hero-subtitle mt-3">
+                            Explore trusted products, daily essentials, healthy treats, toys, grooming items,
+                            and more — all in one place with a clean shopping experience.
+                        </p>
+
+                        <div class="hero-actions mt-4">
+                            <a th:href="@{/shop}" class="btn btn-brand btn-lg">Shop Now</a>
+                            <a th:href="@{/shop}" class="btn btn-outline-brand btn-lg ms-2">Browse Products</a>
+                        </div>
+
+                        <div class="hero-stats mt-4">
+                            <div class="hero-stat">
+                                <h4>10K+</h4>
+                                <p>Happy Customers</p>
+                            </div>
+                            <div class="hero-stat">
+                                <h4>500+</h4>
+                                <p>Pet Products</p>
+                            </div>
+                            <div class="hero-stat">
+                                <h4>24/7</h4>
+                                <p>Support</p>
+                            </div>
+                        </div>
                     </div>
-                    <button class="btn btn-brand w-100" type="submit">Apply Filters</button>
-                </form>
+
+                    <div class="col-lg-6">
+                        <div class="hero-image-wrap">
+                            <div class="hero-glow"></div>
+                            <img th:src="@{/images/hero-pet.png}"
+                                 alt="Happy pets"
+                                 class="img-fluid hero-image">
+                            <div class="hero-floating-card card-one">
+                                <span>Best Seller</span>
+                                <strong>Pet Essentials</strong>
+                            </div>
+                            <div class="hero-floating-card card-two">
+                                <span>Fast Delivery</span>
+                                <strong>At Your Doorstep</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-end mb-4">
-                <div>
-                    <span class="badge-soft">Shop</span>
-                    <h1 class="mt-2">Products for daily care and happy play</h1>
+    </section>
+
+    <!-- FEATURE BARS -->
+    <section class="py-4">
+        <div class="container">
+            <div class="feature-strip">
+                <div class="feature-item">
+                    <div class="feature-icon">🚚</div>
+                    <div>
+                        <h6>Fast Delivery</h6>
+                        <p>Quick and reliable shipping</p>
+                    </div>
                 </div>
-                <div class="text-muted" th:text="${products.totalElements + ' items'}"></div>
+                <div class="feature-item">
+                    <div class="feature-icon">🛡️</div>
+                    <div>
+                        <h6>Safe & Trusted</h6>
+                        <p>Quality products only</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💬</div>
+                    <div>
+                        <h6>24/7 Support</h6>
+                        <p>Always here to help</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💳</div>
+                    <div>
+                        <h6>Secure Payment</h6>
+                        <p>Easy and safe checkout</p>
+                    </div>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-xl-4" th:each="product : ${products.content}">
-                    <div class="product-card p-3 h-100 d-flex flex-column">
-                        <img class="card-media rounded-4 mb-3" th:src="${product.imageUrl}" th:alt="${product.name}">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-light text-dark" th:text="${product.category.name}"></span>
-                            <span class="fw-semibold" th:text="${'$' + product.price}"></span>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="section-block">
+        <div class="container">
+            <div class="section-heading d-flex justify-content-between align-items-end flex-wrap gap-3">
+                <div>
+                    <span class="section-tag">Categories</span>
+                    <h2 class="section-title mt-2">Shop by Category</h2>
+                </div>
+                <a th:href="@{/shop}" class="text-decoration-none section-link">View All</a>
+            </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-6 col-md-3 col-xl-2" th:each="categoryItem : ${categories}">
+                    <a th:href="@{/shop(category=${categoryItem.slug})}" class="category-card text-decoration-none">
+                        <div class="category-icon">
+                            <span th:text="${categoryItem.name != null ? categoryItem.name.substring(0,1) : 'P'}"></span>
                         </div>
-                        <h5 class="mt-3" th:text="${product.name}"></h5>
-                        <p class="text-muted small flex-grow-1" th:text="${product.description}"></p>
+                        <h6 th:text="${categoryItem.name}"></h6>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEALS / PROMO BANNERS -->
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="promo-card promo-green">
+                        <span class="promo-label">Special Offer</span>
+                        <h3>Healthy Meals & Treats</h3>
+                        <p>Discounts on pet food, snacks, and daily essentials.</p>
+                        <a th:href="@{/shop}" class="promo-link">Shop Deals →</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="promo-card promo-orange">
+                        <span class="promo-label">Best Value</span>
+                        <h3>Grooming & Hygiene</h3>
+                        <p>Keep your pet clean, fresh, and comfortable every day.</p>
+                        <a th:href="@{/shop}" class="promo-link">Explore Now →</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="promo-card promo-dark">
+                        <span class="promo-label">Top Rated</span>
+                        <h3>Toys & Accessories</h3>
+                        <p>Fun, engaging, and durable products for playful pets.</p>
+                        <a th:href="@{/shop}" class="promo-link">Discover More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS -->
+    <section class="section-block">
+        <div class="container">
+            <div class="section-heading d-flex justify-content-between align-items-end flex-wrap gap-3">
+                <div>
+                    <span class="section-tag">Featured</span>
+                    <h2 class="section-title mt-2">Best Sellers</h2>
+                </div>
+                <a th:href="@{/shop}" class="text-decoration-none section-link">Shop All Products</a>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-md-6 col-xl-3" th:each="product : ${featuredProducts}">
+                    <div class="product-card p-3 h-100 d-flex flex-column">
+                        <div class="product-image-wrap">
+                            <img class="product-image" th:src="${product.imageUrl}" th:alt="${product.name}">
+                            <span class="product-badge" th:text="${product.category != null ? product.category.name : 'Product'}"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <h6 class="mb-0 product-name" th:text="${product.name}"></h6>
+                            <span class="product-price" th:text="${'$' + product.price}"></span>
+                        </div>
+
+                        <p class="text-muted small mt-2 flex-grow-1" th:text="${product.description}"></p>
+
                         <form sec:authorize="isAuthenticated()" method="post" th:action="@{/shop/cart}">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                             <input type="hidden" name="slug" th:value="${product.slug}">
@@ -51,18 +195,653 @@
                             <input type="hidden" name="price" th:value="${product.price}">
                             <button class="btn btn-brand w-100" type="submit">Add to Cart</button>
                         </form>
-                        <a sec:authorize="!isAuthenticated()" class="btn btn-outline-brand w-100" th:href="@{/login}">Sign in to buy</a>
+
+                        <a sec:authorize="!isAuthenticated()"
+                           class="btn btn-outline-brand w-100"
+                           th:href="@{/login}">Sign in to buy</a>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <a class="btn btn-outline-brand" th:if="${!products.first}" th:href="@{/shop(page=${products.page - 1}, search=${search}, category=${selectedCategory}, minPrice=${minPrice}, maxPrice=${maxPrice}, available=${available})}">Previous</a>
-                <span class="text-muted">Page <span th:text="${products.page + 1}"></span> of <span th:text="${products.totalPages}"></span></span>
-                <a class="btn btn-outline-brand ms-auto" th:if="${!products.last}" th:href="@{/shop(page=${products.page + 1}, search=${search}, category=${selectedCategory}, minPrice=${minPrice}, maxPrice=${maxPrice}, available=${available})}">Next</a>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <div class="info-image-card">
+                        <img th:src="@{/images/pet-lifestyle.png}" alt="Pet lifestyle" class="img-fluid rounded-5">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <span class="section-tag">Why Choose Us</span>
+                    <h2 class="section-title mt-2">We make pet shopping simple, safe, and enjoyable</h2>
+                    <p class="text-muted mt-3">
+                        Find everything your pet needs in one smooth shopping experience. Our store focuses on
+                        trusted quality, easy browsing, and a modern interface that works well on every device.
+                    </p>
+
+                    <div class="why-list mt-4">
+                        <div class="why-item">
+                            <strong>Curated Products</strong>
+                            <p>Only useful and reliable items for pets.</p>
+                        </div>
+                        <div class="why-item">
+                            <strong>Modern Shopping Flow</strong>
+                            <p>Simple navigation, quick filtering, and clean cards.</p>
+                        </div>
+                        <div class="why-item">
+                            <strong>Built for Growth</strong>
+                            <p>Flexible structure that supports more sections later.</p>
+                        </div>
+                    </div>
+
+                    <a th:href="@{/shop}" class="btn btn-brand mt-4">Start Shopping</a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section-block">
+        <div class="container">
+            <div class="section-heading text-center">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title mt-2">Trusted by pet owners</h2>
+            </div>
+
+            <div class="row g-4 mt-3">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <p>
+                            “The design is clean and the shopping experience feels premium. My customers love it.”
+                        </p>
+                        <div class="testimonial-user">
+                            <div class="avatar-circle">A</div>
+                            <div>
+                                <strong>Happy Customer</strong>
+                                <span>Regular buyer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <p>
+                            “Fast browsing, simple product cards, and easy checkout. Exactly what a modern store needs.”
+                        </p>
+                        <div class="testimonial-user">
+                            <div class="avatar-circle">P</div>
+                            <div>
+                                <strong>Pet Parent</strong>
+                                <span>Frequent shopper</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <p>
+                            “Very attractive UI and easy to understand. It looks professional on both desktop and mobile.”
+                        </p>
+                        <div class="testimonial-user">
+                            <div class="avatar-circle">S</div>
+                            <div>
+                                <strong>Store Visitor</strong>
+                                <span>New user</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMUNITY / GALLERY -->
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="community-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-6">
+                        <span class="section-tag">Community</span>
+                        <h2 class="section-title mt-2">Moments from Our Community</h2>
+                        <p class="text-muted mt-3">
+                            A friendly space for pet lovers, happy customers, and beautiful pet moments shared by the community.
+                        </p>
+                        <a th:href="@{/shop}" class="btn btn-brand mt-3">Explore Products</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="community-grid">
+                            <img th:src="@{/images/community-1.jpg}" alt="Community 1">
+                            <img th:src="@{/images/community-2.jpg}" alt="Community 2">
+                            <img th:src="@{/images/community-3.jpg}" alt="Community 3">
+                            <img th:src="@{/images/community-4.jpg}" alt="Community 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section-block">
+        <div class="container">
+            <div class="newsletter-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-7">
+                        <span class="section-tag">Newsletter</span>
+                        <h2 class="section-title mt-2">Get offers, new arrivals, and pet care updates</h2>
+                        <p class="text-muted mt-3">
+                            Stay updated with product launches, discounts, and useful pet care tips.
+                        </p>
+                    </div>
+                    <div class="col-lg-5">
+                        <form class="newsletter-form" method="post" th:action="@{/subscribe}">
+                            <input type="email" class="form-control form-control-lg" name="email" placeholder="Enter your email">
+                            <button class="btn btn-brand btn-lg mt-3 w-100" type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
+
 <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+<style>
+    :root{
+        --brand:#0f7a4f;
+        --brand-dark:#0b5f3d;
+        --brand-soft:#e8f6ef;
+        --text:#1f2937;
+        --muted:#6b7280;
+        --bg:#f7f7f2;
+        --card:#ffffff;
+        --border:#e5e7eb;
+        --shadow:0 18px 45px rgba(15, 122, 79, .10);
+        --radius:28px;
+    }
+
+    body{
+        background: linear-gradient(180deg, #f5f7f4 0%, #ffffff 100%);
+        color: var(--text);
+    }
+
+    .hero-section{
+        padding: 38px 0 14px;
+    }
+
+    .hero-card{
+        background:
+            radial-gradient(circle at top right, rgba(255,255,255,.34), transparent 30%),
+            linear-gradient(135deg, #0f7a4f 0%, #156b48 55%, #1e8b5d 100%);
+        border-radius: 34px;
+        padding: 42px;
+        box-shadow: var(--shadow);
+        color: #fff;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .hero-badge,
+    .section-tag,
+    .promo-label,
+    .product-badge{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        font-weight: 700;
+        letter-spacing: .2px;
+    }
+
+    .hero-badge{
+        background: rgba(255,255,255,.14);
+        color: #fff;
+        padding: 8px 14px;
+        font-size: 13px;
+        backdrop-filter: blur(8px);
+    }
+
+    .hero-title{
+        font-size: clamp(2rem, 4vw, 4rem);
+        line-height: 1.06;
+        font-weight: 800;
+        max-width: 12ch;
+        margin-bottom: 0;
+    }
+
+    .hero-subtitle{
+        font-size: 1.02rem;
+        line-height: 1.8;
+        max-width: 58ch;
+        color: rgba(255,255,255,.9);
+    }
+
+    .hero-actions .btn{
+        border-radius: 999px;
+        padding: 14px 22px;
+    }
+
+    .btn-brand{
+        background: #fff;
+        color: var(--brand-dark);
+        border: 1px solid #fff;
+        font-weight: 700;
+        box-shadow: none;
+    }
+
+    .btn-brand:hover{
+        background: #f1fff7;
+        color: var(--brand-dark);
+    }
+
+    .btn-outline-brand{
+        border: 1.5px solid rgba(255,255,255,.75);
+        color: #fff;
+        background: transparent;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 14px 22px;
+    }
+
+    .btn-outline-brand:hover{
+        background: rgba(255,255,255,.12);
+        color: #fff;
+    }
+
+    .hero-stats{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .hero-stat{
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.18);
+        border-radius: 20px;
+        padding: 14px 18px;
+        min-width: 132px;
+        backdrop-filter: blur(8px);
+    }
+
+    .hero-stat h4{
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .hero-stat p{
+        margin: 4px 0 0;
+        color: rgba(255,255,255,.85);
+        font-size: .88rem;
+    }
+
+    .hero-image-wrap{
+        position: relative;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-image{
+        max-height: 430px;
+        object-fit: contain;
+        filter: drop-shadow(0 18px 28px rgba(0,0,0,.18));
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-glow{
+        position: absolute;
+        width: 330px;
+        height: 330px;
+        background: rgba(255,255,255,.14);
+        border-radius: 50%;
+        filter: blur(10px);
+        z-index: 1;
+    }
+
+    .hero-floating-card{
+        position: absolute;
+        background: rgba(255,255,255,.96);
+        color: var(--text);
+        border-radius: 18px;
+        padding: 12px 14px;
+        box-shadow: 0 14px 30px rgba(0,0,0,.12);
+        z-index: 3;
+        min-width: 145px;
+    }
+
+    .hero-floating-card span{
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    .hero-floating-card strong{
+        display: block;
+        font-size: 14px;
+        margin-top: 2px;
+    }
+
+    .card-one{ top: 48px; right: 10px; }
+    .card-two{ bottom: 42px; left: 10px; }
+
+    .feature-strip{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.04);
+    }
+
+    .feature-item{
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 8px 10px;
+    }
+
+    .feature-icon{
+        width: 54px;
+        height: 54px;
+        border-radius: 18px;
+        background: var(--brand-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        flex: 0 0 auto;
+    }
+
+    .feature-item h6{
+        margin: 0;
+        font-weight: 800;
+    }
+
+    .feature-item p{
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: .9rem;
+    }
+
+    .section-block{
+        padding: 44px 0;
+    }
+
+    .section-tag{
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .section-title{
+        font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+        font-weight: 800;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    .section-link{
+        color: var(--brand-dark);
+        font-weight: 700;
+    }
+
+    .category-card{
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 22px 16px;
+        text-align: center;
+        display: block;
+        box-shadow: 0 10px 24px rgba(0,0,0,.04);
+        transition: transform .2s ease, box-shadow .2s ease;
+        min-height: 162px;
+    }
+
+    .category-card:hover{
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(15,122,79,.12);
+    }
+
+    .category-icon{
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--brand-soft), #ffffff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        font-weight: 800;
+        color: var(--brand-dark);
+        border: 1px solid rgba(15,122,79,.08);
+    }
+
+    .category-card h6{
+        margin: 0;
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .promo-card{
+        border-radius: 28px;
+        padding: 28px;
+        min-height: 250px;
+        color: #fff;
+        box-shadow: var(--shadow);
+    }
+
+    .promo-green{ background: linear-gradient(135deg, #0f7a4f, #11a567); }
+    .promo-orange{ background: linear-gradient(135deg, #f2994a, #ee6a3b); }
+    .promo-dark{ background: linear-gradient(135deg, #1f2937, #374151); }
+
+    .promo-card h3{
+        font-weight: 800;
+        margin-top: 12px;
+    }
+
+    .promo-card p{
+        color: rgba(255,255,255,.9);
+        margin-top: 10px;
+        line-height: 1.7;
+    }
+
+    .promo-link{
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .product-card{
+        background: #fff;
+        border-radius: 26px;
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 24px rgba(0,0,0,.04);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .product-card:hover{
+        transform: translateY(-4px);
+        box-shadow: 0 16px 34px rgba(15,122,79,.12);
+    }
+
+    .product-image-wrap{
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        background: #f8fafc;
+        aspect-ratio: 1 / 1;
+    }
+
+    .product-image{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-badge{
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(255,255,255,.92);
+        color: var(--brand-dark);
+        padding: 7px 12px;
+        font-size: 12px;
+        box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    }
+
+    .product-name{
+        font-weight: 800;
+        line-height: 1.25;
+    }
+
+    .product-price{
+        color: var(--brand-dark);
+        font-weight: 800;
+    }
+
+    .info-image-card img{
+        box-shadow: var(--shadow);
+        border-radius: 30px;
+    }
+
+    .why-list{
+        display: grid;
+        gap: 16px;
+    }
+
+    .why-item{
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 18px 20px;
+        box-shadow: 0 10px 24px rgba(0,0,0,.04);
+    }
+
+    .why-item strong{
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .why-item p{
+        margin: 0;
+        color: var(--muted);
+    }
+
+    .testimonial-card{
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 24px;
+        height: 100%;
+        box-shadow: 0 10px 24px rgba(0,0,0,.04);
+    }
+
+    .testimonial-card p{
+        color: #374151;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-user{
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .avatar-circle{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .testimonial-user span{
+        display: block;
+        color: var(--muted);
+        font-size: .9rem;
+    }
+
+    .community-card,
+    .newsletter-card{
+        background: #fff;
+        border-radius: 30px;
+        border: 1px solid var(--border);
+        padding: 28px;
+        box-shadow: 0 12px 28px rgba(0,0,0,.05);
+    }
+
+    .community-grid{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .community-grid img{
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 22px;
+    }
+
+    .newsletter-form .form-control{
+        border-radius: 18px;
+        min-height: 54px;
+        border: 1px solid var(--border);
+    }
+
+    .newsletter-form .btn{
+        border-radius: 18px;
+        min-height: 54px;
+    }
+
+    @media (max-width: 991px){
+        .hero-card{ padding: 28px; }
+        .feature-strip{ grid-template-columns: repeat(2, 1fr); }
+        .hero-image-wrap{ min-height: 340px; }
+        .card-one{ top: 14px; right: 0; }
+        .card-two{ bottom: 18px; left: 0; }
+    }
+
+    @media (max-width: 767px){
+        .hero-actions .btn{
+            width: 100%;
+            margin-left: 0 !important;
+            margin-top: 10px;
+        }
+
+        .feature-strip{
+            grid-template-columns: 1fr;
+        }
+
+        .hero-stats{
+            gap: 12px;
+        }
+
+        .hero-stat{
+            flex: 1 1 100%;
+        }
+
+        .community-grid{
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+</style>
+
 </body>
 </html>

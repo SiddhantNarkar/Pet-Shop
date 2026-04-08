@@ -1,5 +1,6 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
+COPY pom.xml pom.xml
 COPY backend backend
 COPY frontend frontend
 RUN mvn -pl backend/petshop-backend -am clean package -DskipTests

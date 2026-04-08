@@ -103,27 +103,27 @@ public class CommerceService {
         BigDecimal discount = resolveDiscount(request.promoCode(), subtotal);
         BigDecimal total = subtotal.subtract(discount);
 
-        Order order = new Order();
-        order.setOwnerReference(request.ownerReference());
-        order.setUserId(request.userId());
-        order.setCustomerName(request.customerName());
-        order.setCustomerEmail(request.customerEmail());
-        order.setCustomerPhone(request.customerPhone());
-        order.setShippingAddress(request.shippingAddress());
-        order.setCity(request.city());
-        order.setState(request.state());
-        order.setPostalCode(request.postalCode());
-        order.setNotes(request.notes());
-        order.setStatus(com.petshop.shared.enums.OrderStatus.CONFIRMED);
-        order.setPaymentStatus(PaymentStatus.PENDING);
-        order.setSubtotal(subtotal);
-        order.setDiscountAmount(discount);
-        order.setTotalAmount(total);
-        order.setPromoCode(request.promoCode());
+        Order draftOrder = new Order();
+        draftOrder.setOwnerReference(request.ownerReference());
+        draftOrder.setUserId(request.userId());
+        draftOrder.setCustomerName(request.customerName());
+        draftOrder.setCustomerEmail(request.customerEmail());
+        draftOrder.setCustomerPhone(request.customerPhone());
+        draftOrder.setShippingAddress(request.shippingAddress());
+        draftOrder.setCity(request.city());
+        draftOrder.setState(request.state());
+        draftOrder.setPostalCode(request.postalCode());
+        draftOrder.setNotes(request.notes());
+        draftOrder.setStatus(com.petshop.shared.enums.OrderStatus.CONFIRMED);
+        draftOrder.setPaymentStatus(PaymentStatus.PENDING);
+        draftOrder.setSubtotal(subtotal);
+        draftOrder.setDiscountAmount(discount);
+        draftOrder.setTotalAmount(total);
+        draftOrder.setPromoCode(request.promoCode());
 
         cart.getItems().forEach(cartItem -> {
             OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
+            orderItem.setOrder(draftOrder);
             orderItem.setItemType(cartItem.getItemType());
             orderItem.setItemSlug(cartItem.getItemSlug());
             orderItem.setItemName(cartItem.getItemName());
@@ -131,10 +131,10 @@ public class CommerceService {
             orderItem.setUnitPrice(cartItem.getUnitPrice());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setLineTotal(cartItem.getUnitPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-            order.getItems().add(orderItem);
+            draftOrder.getItems().add(orderItem);
         });
 
-        order = orderRepository.save(order);
+        Order order = orderRepository.save(draftOrder);
         PaymentResult paymentResult = paymentProvider.charge(total, request.paymentMethod(), "order-" + order.getId());
         order.setPaymentStatus(paymentResult.status());
         order.setPaymentReference(paymentResult.providerReference());

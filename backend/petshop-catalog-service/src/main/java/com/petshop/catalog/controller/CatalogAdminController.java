@@ -1,8 +1,19 @@
 package com.petshop.catalog.controller;
 
-import com.petshop.catalog.dto.*;
+import com.petshop.catalog.dto.CatalogAdminSummaryDto;
+import com.petshop.catalog.dto.UpsertBlogPostRequest;
+import com.petshop.catalog.dto.UpsertCategoryRequest;
+import com.petshop.catalog.dto.UpsertFaqRequest;
+import com.petshop.catalog.dto.UpsertPetRequest;
+import com.petshop.catalog.dto.UpsertProductRequest;
+import com.petshop.catalog.dto.UpsertServiceRequest;
 import com.petshop.catalog.service.CatalogAdminService;
-import com.petshop.shared.dto.*;
+import com.petshop.shared.dto.BlogPostDto;
+import com.petshop.shared.dto.CategoryDto;
+import com.petshop.shared.dto.FaqItemDto;
+import com.petshop.shared.dto.PetDto;
+import com.petshop.shared.dto.ProductDto;
+import com.petshop.shared.dto.ServiceDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -117,4 +128,3 @@ public class CatalogAdminController {
         catalogAdminService.deleteFaq(id);
     }
 }
-

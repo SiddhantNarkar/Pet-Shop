@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS commerce;
 
-CREATE TABLE IF NOT EXISTS carts (
+CREATE TABLE IF NOT EXISTS commerce.carts (
     id BIGSERIAL PRIMARY KEY,
     owner_reference VARCHAR(120) NOT NULL UNIQUE,
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS carts (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS cart_items (
+CREATE TABLE IF NOT EXISTS commerce.cart_items (
     id BIGSERIAL PRIMARY KEY,
-    cart_id BIGINT NOT NULL REFERENCES carts(id) ON DELETE CASCADE,
+    cart_id BIGINT NOT NULL REFERENCES commerce.carts(id) ON DELETE CASCADE,
     item_type VARCHAR(20) NOT NULL,
     item_slug VARCHAR(120) NOT NULL,
     item_name VARCHAR(180) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
     quantity INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS promo_codes (
+CREATE TABLE IF NOT EXISTS commerce.promo_codes (
     id BIGSERIAL PRIMARY KEY,
     code VARCHAR(60) NOT NULL UNIQUE,
     description VARCHAR(255) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS promo_codes (
     expires_at TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS orders (
+CREATE TABLE IF NOT EXISTS commerce.orders (
     id BIGSERIAL PRIMARY KEY,
     owner_reference VARCHAR(120) NOT NULL,
     user_id BIGINT,
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS order_items (
+CREATE TABLE IF NOT EXISTS commerce.order_items (
     id BIGSERIAL PRIMARY KEY,
-    order_id BIGINT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    order_id BIGINT NOT NULL REFERENCES commerce.orders(id) ON DELETE CASCADE,
     item_type VARCHAR(20) NOT NULL,
     item_slug VARCHAR(120) NOT NULL,
     item_name VARCHAR(180) NOT NULL,
@@ -63,9 +63,9 @@ CREATE TABLE IF NOT EXISTS order_items (
     line_total NUMERIC(10,2) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS payment_transactions (
+CREATE TABLE IF NOT EXISTS commerce.payment_transactions (
     id BIGSERIAL PRIMARY KEY,
-    order_id BIGINT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    order_id BIGINT NOT NULL REFERENCES commerce.orders(id) ON DELETE CASCADE,
     provider VARCHAR(60) NOT NULL,
     provider_reference VARCHAR(120) NOT NULL,
     amount NUMERIC(10,2) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS payment_transactions (
     raw_response VARCHAR(2000)
 );
 
-CREATE TABLE IF NOT EXISTS wishlist_items (
+CREATE TABLE IF NOT EXISTS commerce.wishlist_items (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
     item_type VARCHAR(20) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS wishlist_items (
     UNIQUE (user_id, item_slug, item_type)
 );
 
-CREATE TABLE IF NOT EXISTS inquiries (
+CREATE TABLE IF NOT EXISTS commerce.inquiries (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     item_slug VARCHAR(120) NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS inquiries (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS service_bookings (
+CREATE TABLE IF NOT EXISTS commerce.service_bookings (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     service_slug VARCHAR(120) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS service_bookings (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS adoption_requests (
+CREATE TABLE IF NOT EXISTS commerce.adoption_requests (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     pet_slug VARCHAR(120) NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS adoption_requests (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS contact_messages (
+CREATE TABLE IF NOT EXISTS commerce.contact_messages (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     type VARCHAR(40) NOT NULL,

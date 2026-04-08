@@ -1,9 +1,9 @@
 server:
-  port: ${PORT:${SERVER_PORT:8080}}
+  port: ${PORT:${SERVER_PORT:8081}}
 
 spring:
   application:
-    name: petshop-web
+    name: petshop-backend
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/petshop}
     username: ${SPRING_DATASOURCE_USERNAME:petshop}
@@ -14,17 +14,14 @@ spring:
     open-in-view: false
     properties:
       hibernate:
-        default_schema: identity
         format_sql: true
   flyway:
     enabled: true
-    default-schema: identity
-    schemas: identity
-  thymeleaf:
-    cache: ${THYMELEAF_CACHE:false}
-
-petshop:
-  backend-base-url: ${PETSHOP_BACKEND_BASE_URL:${PETSHOP_SERVICES_CATALOG_BASE_URL:http://localhost:8081}}
+    default-schema: catalog
+    schemas: catalog,commerce
+    locations: classpath:db/migration
+  jackson:
+    default-property-inclusion: non_null
 
 management:
   endpoints:

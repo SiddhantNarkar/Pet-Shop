@@ -9,12 +9,12 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfig {
 
     @Bean
-    public RestClient catalogRestClient(@Value("${petshop.services.catalog-base-url}") String baseUrl) {
+    public RestClient catalogRestClient(@Value("${petshop.backend-base-url}") String baseUrl) {
         return RestClient.builder().baseUrl(baseUrl).build();
     }
 
     @Bean
-    public RestClient commerceRestClient(@Value("${petshop.services.commerce-base-url}") String baseUrl) {
+    public RestClient commerceRestClient(@Value("${petshop.backend-base-url}") String baseUrl) {
         return RestClient.builder().baseUrl(baseUrl).build();
     }
 }

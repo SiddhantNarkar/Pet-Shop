@@ -1,20 +1,21 @@
 # Backend Workspace
 
-`backend/` contains the runtime services and shared contracts.
+`backend/` now contains the single backend app plus the shared contracts it reuses.
 
 ## Modules
 
+- `petshop-backend`
 - `petshop-shared`
-- `petshop-gateway`
-- `petshop-catalog-service`
-- `petshop-commerce-service`
+
+The older microservice folders are still present in the repo for reference, but the recommended deployment uses `petshop-backend`.
 
 ## Production Notes
 
-- The gateway is the only public service.
-- Catalog, commerce, and web can all point at the same Neon PostgreSQL database.
+- `petshop-backend` is the public backend API.
+- `petshop-web` is the public frontend.
+- Both can point at the same Neon PostgreSQL database.
 - Use normal HTTP image URLs in the existing image fields instead of changing the service logic.
 
 ## Environment Example
 
-See [`backend/.env.example`](/c:/Users/yetes/OneDrive/Desktop/Pet%20Shop/backend/.env.example).
+See [`backend/petshop-backend/.env.example`](/c:/Users/yetes/OneDrive/Desktop/Pet%20Shop/backend/petshop-backend/.env.example).

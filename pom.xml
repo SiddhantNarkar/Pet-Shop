@@ -15,13 +15,11 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>petshop-platform</name>
-    <description>Production-ready Pet Shop microservice platform</description>
+    <description>Production-ready Pet Shop monolith platform</description>
 
     <modules>
         <module>backend/petshop-shared</module>
-        <module>backend/petshop-gateway</module>
-        <module>backend/petshop-catalog-service</module>
-        <module>backend/petshop-commerce-service</module>
+        <module>backend/petshop-backend</module>
         <module>frontend/petshop-web</module>
     </modules>
 

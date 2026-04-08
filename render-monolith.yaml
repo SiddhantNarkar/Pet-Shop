@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: petshop-backend
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./backend/petshop-backend/Dockerfile
+    autoDeployTrigger: commit
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: petshop-web
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./frontend/petshop-web/Dockerfile
+    autoDeployTrigger: commit
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: PETSHOP_BACKEND_BASE_URL
+        sync: false

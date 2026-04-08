@@ -1,6 +1,6 @@
 # Production Deployment Guide
 
-This guide keeps the microservice logic unchanged and focuses on configuration, hosting, and verification.
+This guide follows the fast monolith setup: one backend, one frontend, and one PostgreSQL database.
 
 ## 1. Final Layout
 
@@ -8,15 +8,12 @@ This guide keeps the microservice logic unchanged and focuses on configuration, 
 Pet Shop/
 |-- backend/
 |   |-- petshop-shared/
-|   |-- petshop-gateway/
-|   |-- petshop-catalog-service/
-|   |-- petshop-commerce-service/
+|   |-- petshop-backend/
 |-- frontend/
 |   |-- petshop-web/
 |-- docs/
-|-- docker-compose.yml
 |-- pom.xml
-|-- render.yaml
+|-- render-monolith.yaml
 ```
 
 ## 2. Neon Setup
@@ -59,34 +56,25 @@ https://example.com/images/products/carrier.svg
 
 Recommended services:
 
-- `petshop-catalog-service` as private
-- `petshop-commerce-service` as private
-- `petshop-web` as private
-- `petshop-gateway` as public
-
-The public traffic should go through the gateway.
+- `petshop-backend` as the public backend API
+- `petshop-web` as the public frontend
 
 ## 4. Render Deployment Steps
 
 1. Push the repo to GitHub.
 2. In Render, create a Blueprint from the repo.
-3. If you want free-tier Render, use [`render-free.yaml`](../render-free.yaml).
-4. If you want paid/private services, use [`render-backend.yaml`](../render-backend.yaml).
-5. Set the Neon database env vars for the three stateful services.
-6. Let Render build all services.
-7. Expose only the gateway publicly.
-8. Use the service URLs or blueprint wiring for internal traffic.
+3. Use [`render-monolith.yaml`](../render-monolith.yaml).
+4. Set the Neon database env vars for both services.
+5. Set `PETSHOP_BACKEND_BASE_URL` on the frontend service to the backend public URL.
+6. Let Render build both services.
+7. Open the frontend public URL.
 
 ## 5. Manual Values You Must Configure
 
 - `SPRING_DATASOURCE_URL`
 - `SPRING_DATASOURCE_USERNAME`
 - `SPRING_DATASOURCE_PASSWORD`
-- `PETSHOP_SERVICES_CATALOG_BASE_URL` if you are not using blueprint wiring
-- `PETSHOP_SERVICES_COMMERCE_BASE_URL` if you are not using blueprint wiring
-- `PETSHOP_ROUTES_WEB` if you are not using blueprint wiring
-- `PETSHOP_ROUTES_CATALOG` if you are not using blueprint wiring
-- `PETSHOP_ROUTES_COMMERCE` if you are not using blueprint wiring
+- `PETSHOP_BACKEND_BASE_URL` for the frontend app
 
 Optional:
 
@@ -128,8 +116,8 @@ Then verify:
 
 After Render deploys:
 
-1. Open the gateway URL.
-2. Check `/actuator/health`.
+1. Open the frontend URL.
+2. Check `/actuator/health` on the backend URL.
 3. Browse the public storefront pages.
 4. Register a user.
 5. Add to cart and checkout.

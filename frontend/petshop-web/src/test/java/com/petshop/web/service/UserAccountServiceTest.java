@@ -1,4 +1,3 @@
-// UserAccountServiceTest.java
 package com.petshop.web.service;
 
 import static org.assertj.core.api.Assertions.assertThat;

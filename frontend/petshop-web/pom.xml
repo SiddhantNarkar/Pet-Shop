@@ -13,6 +13,10 @@
     <artifactId>petshop-web</artifactId>
     <name>petshop-web</name>
 
+    <properties>
+        <spring-boot.run.skip>false</spring-boot.run.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.petshop</groupId>
@@ -53,7 +57,8 @@
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-mysql</artifactId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>

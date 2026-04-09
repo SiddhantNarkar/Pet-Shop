@@ -14,7 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "carts", schema = "commerce")
+@Table(name = "carts", catalog = "commerce")
 public class Cart {
 
     @Id

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "cart_items", schema = "commerce")
+@Table(name = "cart_items", catalog = "commerce")
 public class CartItem {
 
     @Id

@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "wishlist_items", schema = "commerce")
+@Table(name = "wishlist_items", catalog = "commerce")
 public class WishlistItem {
 
     @Id

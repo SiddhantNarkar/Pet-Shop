@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "payment_transactions", schema = "commerce")
+@Table(name = "payment_transactions", catalog = "commerce")
 public class PaymentTransaction {
 
     @Id
